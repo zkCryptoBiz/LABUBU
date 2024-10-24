@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Hanyi Senty Candy';
+    src: url('fonts/subset-HanyiSentyCandy.woff2') format('woff2'),
+        url('fonts/subset-HanyiSentyCandy.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+

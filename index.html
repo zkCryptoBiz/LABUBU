@@ -1,0 +1,900 @@
+﻿<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+
+    <!-- Page Title-->
+    <title>$LABUBU</title>
+    <script src="3.4.5"></script>
+    <link href="stylesheet.css" rel="stylesheet">
+    <!-- Meta Tags-->
+    <meta name="description" content="Labubu On SOL">
+    <meta name="keywords" content="LABUBU on SOL">
+    <meta name="author" content="mix_design">
+
+    <!-- Viewport Meta-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="css2?family=Chewy&display=swap" rel="stylesheet">
+
+    <link href="css2-1?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/loaders/loader-color-12.css">
+    <link rel="stylesheet" type="text/css" href="css/style-plugins.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/colors/color.css">
+    <!-- Template Styles End -->
+
+    <!-- Custom Browser Color Start -->
+    <meta name="theme-color" content="#eab67d">
+    <meta name="msapplication-navbutton-color" content="#eab67d">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#eab67d">
+
+    <!-- Custom Browser Color End -->
+
+    <!-- Add this in the <head> section or in your CSS file -->
+    <style>
+      #running-character {
+        position: fixed;
+        bottom: 20px;
+        right: -100px;
+        width: 100px;
+        height: 100px;
+        background-image: url("img/run.gif");
+        background-size: contain;
+        background-repeat: no-repeat;
+        animation: run 10s linear infinite;
+        z-index: 9999;
+      }
+
+      @keyframes run {
+        from {
+          right: -100px;
+        }
+        to {
+          right: 100%;
+        }
+      }
+
+      * {
+        font-family: "Chewy", system-ui;
+        font-weight: 400;
+        font-style: normal;
+      }
+      .cute {
+        font-weight: 600;
+        color: #000000;
+        text-transform: uppercase;
+        padding: 0.5rem 1em;
+        background: #fff0f0;
+        border: 2px solid #b18597;
+        border-radius: 0.75em;
+        transform-style: preserve-3d;
+        transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
+          background 150ms cubic-bezier(0, 0, 0.58, 1);
+        &::before {
+          position: absolute;
+          content: "";
+          width: 100%;
+          height: 100%;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: #f9c4d2;
+          border-radius: inherit;
+          box-shadow: 0 0 0 2px #b18597, 0 0.625em 0 0 rgba(255, 200, 200, 0.1);
+          transform: translate3d(0, 0.75em, -1em);
+          transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
+            box-shadow 150ms cubic-bezier(0, 0, 0.58, 1);
+        }
+        &:hover {
+          background: #f9c4d2;
+          transform: translate(0, 0.25em);
+          &::before {
+            box-shadow: 0 0 0 2px #b18597, 0 0.5em 0 0 rgba(255, 200, 200, 0.1);
+            transform: translate3d(0, 0.5em, -1em);
+          }
+        }
+        &:active {
+          background: rgba(255, 200, 200, 0);
+          transform: translate(0em, 0.75em);
+          &::before {
+            box-shadow: 0 0 0 2px #b18597, 0 0 rgba(255, 200, 200, 0.1);
+            transform: translate3d(0, 0, -1em);
+          }
+        }
+      }
+      button {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        outline: none;
+        border: 0;
+        vertical-align: middle;
+        text-decoration: none;
+        font-size: inherit;
+        font-family: inherit;
+      }
+      .section-bg {
+        background-color: #000;
+      }
+      .map-container {
+        position: relative;
+        max-width: 100%;
+      }
+      .fullscreen-video {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        min-width: 100%;
+        z-index: -1;
+        min-height: 100%;
+
+        width: auto;
+        height: auto;
+        transform: translate(-50%, -50%);
+        object-fit: cover;
+      }
+      .library-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .library-image {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      @media (max-width: 768px) {
+        .library-container {
+          height: calc(100vh - 100px); /* Adjust this value as needed */
+        }
+
+        .library-image {
+          width: 120%; /* Make image wider than container */
+          height: 100%;
+          object-fit: cover;
+          object-position: left center; /* Align to the right */
+          position: absolute;
+          right: -15%;
+          top: 0;
+        }
+
+        .cls-library {
+          position: absolute;
+          top: 32%; /* Position text higher */
+          left: 80%;
+          transform: translateX(-50%);
+          width: 90%;
+          text-align: center;
+          z-index: 1;
+        }
+
+        .cls-library p {
+          margin-top: 0;
+          background-color: rgba(0, 0, 0, 0.7);
+          padding: 15px;
+          border-radius: 10px;
+          font-size: 1rem; /* Adjust font size if needed */
+        }
+      }
+      /* Desktop styles (width > 768px) */
+      @media (min-width: 769px) {
+        .responsive-image {
+          opacity: 0.9;
+          scale: 0.9;
+          transition: opacity 0.3s ease-in-out;
+        }
+
+        .map-container:hover .responsive-image {
+          opacity: 1;
+          scale: 0.95;
+          transition: opacity 1s, scale 1s;
+        }
+      }
+
+      /* Mobile styles (width <= 768px) */
+      @media (max-width: 768px) {
+        .responsive-image {
+          animation: slowFadeIn 5s ease-in forwards;
+          scale: 0.95;
+        }
+
+        @keyframes slowFadeIn {
+          0% {
+            opacity: 0;
+          }
+          100% {
+            opacity: 1;
+          }
+        }
+      }
+      .desktop-map {
+        display: block;
+      }
+      .mobile-map {
+        display: none;
+      }
+      @media (max-width: 768px) {
+        .desktop-map {
+          display: none;
+        }
+        .mobile-map {
+          display: block;
+        }
+      }
+      /* ... existing styles ... */
+
+      .video-container {
+        width: 100%;
+        height: 60rem;
+        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        position: relative;
+      }
+
+      .fullwidth-video {
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        min-width: 100%;
+        min-height: 100%;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .fab,
+      .fa-brands {
+        font-size: 2.5rem;
+      }
+      .aside__socials {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+      }
+      .section-main__aside {
+        color: #eab67d !important;
+      }
+      .cls-library {
+        margin-bottom: 0;
+        display: flex;
+        align-content: stretch;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+      .cls-library p {
+        position: absolute;
+        margin-top: 47%;
+        color: #fff;
+      }
+
+      @media screen and (max-width: 480px) {
+        .cls-library p {
+          font-size: x-small;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Loader Start -->
+    <div class="loader">
+      <canvas id="canvas"></canvas>
+      <div class="loader__content">
+        <div class="loader__logo slideInDown">
+          <h3 style="
+              color: #fff;
+              -webkit-text-stroke: 0.5px black;
+
+              text-stroke: 0.5px black;
+            ">
+            $LABUBU
+          </h3>
+        </div>
+        <div class="loader__caption slideInUp">
+          <p class="loading-text">Entering Labubu Land</p>
+          <span class="loading-dots">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <!-- Loader End -->
+    <script>
+      const canvas = document.getElementById("canvas");
+      const gl = canvas.getContext("webgl2");
+      const dpr = Math.max(1, 0.5 * window.devicePixelRatio);
+      const touches = new Map();
+
+      const vertexSource = `#version 300 es
+      #ifdef GL_FRAGMENT_PRECISION_HIGH
+      precision highp float;
+      #else
+      precision mediump float;
+      #endif
+      in vec2 position;
+      void main(void) {
+          gl_Position = vec4(position, 0., 1.);
+      }`;
+
+      const fragmentSource = `#version 300 es
+      #ifdef GL_FRAGMENT_PRECISION_HIGH
+      precision highp float;
+      #else
+      precision mediump float;
+      #endif
+      out vec4 fragColor;
+      uniform vec2 resolution;
+      uniform float time;
+      
+      const vec3 re=vec3(6,4,6)*1.25;
+      #define T time
+  
+      float box(vec3 p,vec3 s,float r) {p=abs(p)-s;return length(p*0.05)-0.6;}
+      float mat=.0;
+      float map(vec3 p){ float rm=-box(p,re,0.5); return rm;}
+      vec3 ce(vec2 uv) {
+          vec2  n=vec2(0),q=vec2(0);
+          uv*=0.4;
+          float  d=dot(uv,uv), s=9.3, a=0.005, b=0.9, t=T*0.2;
+          uv.yx-=T*0.03;
+          mat2 m=mat2(-.6,.8,-.8,-.6)*.9;
+          for (float i=.0; i<130.; i++) {
+              uv*=m; n*=m; 
+              q=uv*s-t+b+i+n;
+              a+=dot(cos(q)/s,vec2(3.82));
+              n-=sin(q);
+              s*=1.82;
+          }
+          vec3 col=vec3(4,2,1)*(a+0.2)+a;
+          return col;
+      }
+      vec3 nm(vec3 p){ vec3 n=22.4-vec3(1); return n;}
+      void main() {
+          vec2 uv=(gl_FragCoord.xy-.5*resolution)/1888.8;
+          vec3 col=vec3(0.2,1.2,2), ro=vec3(0,.1,1.0),rd=normalize(vec3(uv,1)); 
+          vec3 p=ro;
+          float dd=.0;
+          for (float i=.0; i<200.0; i++){
+              float d=map(p);
+              if (d<1e-2) {
+                  vec3 n=nm(p);
+                  {if (p.z>(1.0)) {col+=ce(p.xy*0.1);}; break;}
+              }
+              p+=rd*d;
+              dd+=d;
+          }
+          col*=0.24;
+          fragColor=vec4(col,0.9);
+      }`;
+
+      let time;
+      let buffer;
+      let program;
+      let resolution;
+      let vertices = [];
+      let animationFrameId;
+
+      function resize() {
+        const { innerWidth: width, innerHeight: height } = window;
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        gl.viewport(0, 0, width * dpr, height * dpr);
+      }
+
+      function compile(shader, source) {
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+          console.error(gl.getShaderInfoLog(shader));
+        }
+      }
+
+      function setup() {
+        const vs = gl.createShader(gl.VERTEX_SHADER);
+        const fs = gl.createShader(gl.FRAGMENT_SHADER);
+
+        program = gl.createProgram();
+
+        compile(vs, vertexSource);
+        compile(fs, fragmentSource);
+
+        gl.attachShader(program, vs);
+        gl.attachShader(program, fs);
+        gl.linkProgram(program);
+
+        if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+          console.error(gl.getProgramInfoLog(program));
+        }
+
+        vertices = [
+          -1.0, -1.0, 1.0, -1.0, -1.0, 1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0,
+        ];
+
+        buffer = gl.createBuffer();
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+        gl.bufferData(
+          gl.ARRAY_BUFFER,
+          new Float32Array(vertices),
+          gl.STATIC_DRAW
+        );
+
+        const position = gl.getAttribLocation(program, "position");
+
+        gl.enableVertexAttribArray(position);
+        gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
+
+        time = gl.getUniformLocation(program, "time");
+        resolution = gl.getUniformLocation(program, "resolution");
+      }
+
+      function draw(now) {
+        gl.clearColor(0, 0, 0, 1);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+
+        gl.useProgram(program);
+        gl.bindBuffer(gl.ARRAY_BUFFER, null);
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+
+        gl.uniform1f(time, now * 0.001);
+        gl.uniform2f(resolution, canvas.width, canvas.height);
+        gl.drawArrays(gl.TRIANGLES, 0, vertices.length * 0.5);
+      }
+
+      function loop(now) {
+        draw(now);
+        animationFrameId = requestAnimationFrame(loop);
+      }
+
+      function initLoader() {
+        setup();
+        resize();
+        loop(0);
+      }
+
+      function stopLoader() {
+        // Cancel the animation frame
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+        }
+
+        // Remove the loader from the DOM
+        const loader = document.querySelector(".loader");
+        if (loader) {
+          loader.remove();
+        }
+
+        // Unbind the resize event listener for the loader
+        window.onresize = null;
+
+        // Show the main content
+        document.getElementById("main").style.display = "block";
+      }
+
+      // Initialize the loader
+      initLoader();
+
+      // Simulate content loading (replace this with your actual content loading logic)
+      window.addEventListener("load", function () {
+        // Hide main content initially
+        // document.getElementById("main").style.display = "none";
+
+        // Simulate a loading delay (remove this in production and use your actual loading logic)
+        setTimeout(function () {
+          stopLoader();
+        }, 1000); // Stop the loader after 3 seconds (adjust as needed)
+      });
+
+      // Ensure music plays when the page is interacted with
+      let bg = document.getElementsByTagName("body");
+      window.addEventListener("mouseover", function () {
+        let audio = document.getElementById("bg-music");
+        audio.play().catch((error) => {
+          console.log("Autoplay was prevented:", error);
+        });
+      });
+    </script>
+    <!-- Custom HTML Start -->
+
+    <!-- Main Section Start-->
+    <section id="main" class="section-main">
+      <div class="container-fluid p-0 fullheight">
+        <div class="row g-0 fullheight">
+          <!-- Main Section Intro Start -->
+          <div id="intro" class="col-12 col-xl-9 section-main__intro">
+            <!-- Intro Media Start -->
+            <div class="intro__media">
+              <!-- Main Section Image Background Start -->
+              <div class="media__image media-1"></div>
+              <!-- Main Section Image Background End -->
+
+              <!-- Background Effect Start -->
+              <div class="video-background">
+                <video id="main-video" preload="auto" autoplay="autoplay" loop="loop" muted="muted" playsinline="playsinline">
+                  <source type="video/mp4" src="video/001.mp4">
+                </video>
+              </div>
+
+              <!-- Main Section Color Layer Start -->
+              <div class="color-layer color-layer-medium2"></div>
+              <!-- Main Section Color Layer End -->
+            </div>
+            <!-- Intro Media End -->
+
+            <!-- Intro Header Start -->
+            <div class="intro__header">
+              <!-- Logo Start -->
+              <div class="logo">
+                <h3 style="color: #fff">$LABUBU</h3>
+              </div>
+              <!-- Logo End -->
+
+              <!-- Menu Trigger Start - Visible on Mobile -->
+              <a href="js:;" id="menu-trigger" class="menu-trigger">
+                <i class="fa-solid fa-bars"></i>
+              </a>
+              <!-- Menu Trigger End - Visible on Mobile -->
+            </div>
+            <!-- Intro Header End -->
+
+            <!-- Navigation Start -->
+            <div id="menu" class="menu">
+              <!-- Navigation Controls Start - Visible on Mobile -->
+              <div class="menu__controls">
+                <a href="js:;" id="menu-close" class="menu-close section-close">
+                  <i class="fa-solid fa-xmark"></i>
+                </a>
+              </div>
+              <!-- Navigation Controls End - Visible on Mobile -->
+
+              <!-- Navigation Menu Start -->
+              <div class="menu__container">
+                <nav class="navigation">
+                  <ul>
+                    <li class="transition-el transition-el-1">
+                      <a href="js:;" class="inner-trigger"></a>
+                    </li>
+                    <li class="transition-el transition-el-2">
+                      <a href="js:;" class="inner-trigger dj-club">DJ Club</a>
+                    </li>
+                    <li class="transition-el transition-el-3">
+                      <a href="js:;" class="inner-trigger museum">Museum</a>
+                    </li>
+                    <li class="transition-el transition-el-4">
+                      <a href="js:;" class="inner-trigger library">Library</a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+
+            <div class="intro__headline">
+              <div class="map-container">
+                <map name="desktop-map" class="desktop-map">
+                  <area alt="DJ Club" title="DJ Club" href="js:;" coords="116,64,65" shape="circle" id="about-trigger">
+                  <area alt="Museum" title="Museum" href="js:;" coords="221,195,62" shape="circle" id="works-trigger">
+                  <area alt="Library" title="Library" href="js:;" coords="431,70,58" shape="circle" id="contact-trigger">
+                  <area alt="Coming Soon!" title="Coming Soon!" href="js:;" coords="534,262,65" shape="circle">
+                </map>
+                <map name="mobile-map" class="mobile-map">
+                  <area alt="DJ Club" title="DJ Club" href="js:;" coords="100,79,65" class="dj-club" shape="circle">
+                  <area alt="Museum" title="Museum" href="js:;" coords="210,140,60" class="museum" shape="circle">
+                  <area alt="Library" title="Library" href="js:;" coords="370,50,56" class="library" shape="circle">
+                  <area alt="Coming Soon!" title="Coming Soon!" href="js:;" coords="500,240,30" shape="circle">
+                </map>
+
+                <img src="img/map.png" alt="Map Game" width="666" height="375" class="responsive-image fade-in-out" usemap="#desktop-map" id="map-image">
+              </div>
+            </div>
+          </div>
+          <!-- Main Section Intro End -->
+
+          <!-- Main Section Aside Start -->
+          <div class="col-12 col-xl-3 section-main__aside">
+            <div class="absolute left-1/2 -translate-x-1/2 text-[10rem] lg:text-[18rem] opacity-[0.2] font-extrabold overflow-hidden">
+              <div class="font-container" style="font-family: 'Hanyi Senty Candy'; font-weight: bold">
+                拉布布
+              </div>
+            </div>
+            <!-- Aside Content Start -->
+            <div class="aside__content">
+              <img src="img/sticker7.gif" alt="Labubu" width="100" height="100" class="w-[100px] absolute left-1/2 -translate-x-1/2 z-[-1]">
+
+              <p class="aside__title">$LABUBU on SOL</p>
+              <div style="text-align: center">
+                <span class="text-[1.2rem] font-extrabold">
+                  CA: 0x168168Db04dEF453b7e8BfaFf1E0102a3e810485
+                </span>
+              </div>
+
+              <p class="aside__text">
+                <br>
+                Labubus are a quirky monster from Pop Mart, charming yet eerie,
+                with over 300 collectible versions, embodying modern toy
+                culture. 
+                <div class="text-sm text-white mb-8 -mt-8 aside__text">
+                  Disclaimer: This meme coin is not affiliated with, endorsed by, or associated with the official Labubu brand, Popmart company, or any of its representatives. This project is purely for entertainment purposes and does not claim any rights or connections to Popmart or its intellectual property. Please do your own research before participating, and remember that meme coins are highly speculative and volatile assets
+                </div>
+              
+              <div class="flex flex-wrap justify-center gap-6">
+                <button class="cute">
+                  <a href="https://pump.fun/board" class="px-6 py-3 border-2 border-white text-black-50 rounded-lg hover:bg-white hover:bg-opacity-10 transition duration-300">
+                    <span class="text-xl font-bold">Pump.fun</span>
+                  </a>
+                </button>
+                <button class="cute">
+                  <a href="https://web.telegram.org/k/" class="px-6 py-3 border-2 border-white text-black-50 rounded-lg hover:bg-white hover:bg-opacity-10 transition duration-300">
+                    <span class="text-xl font-bold">telegram</span>
+                  </a>
+                </button>
+                <button class="cute">
+                  <a href="https://x.com/home" class="px-6 py-3 border-2 border-white text-black-50 rounded-lg hover:bg-white hover:bg-opacity-10 transition duration-300">
+                    <span class="text-xl font-bold">twitter </span>
+                  </a>
+                </button>
+              </div>
+            </div>
+            <!-- Aside Content End -->
+
+            <!-- Aside Socials Start -->
+            <div class="aside__socials">
+              <ul class="socials">
+                <li>
+                  <a href="https://www.instagram.com/labubuoneth" target="_blank">
+                    <i class="fa-brands fa-instagram"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://x.com/LabubuOnEth" target="_blank">
+                    <i class="fa-brands fa-x-twitter"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://t.me/labubuoneth" target="_blank">
+                    <i class="fa-brands fa-telegram"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- Main Section Aside End -->
+        </div>
+      </div>
+    </section>
+    <!-- Main Section End -->
+
+    <!-- DJ Club -->
+    <section id="about" class="section-inner about section-bg">
+      <div class="container-fluid p-0 fullheight">
+        <div class="row g-0 fullheight">
+          <div class="col-12 section-inner__content">
+            <!-- Section Controls Start -->
+            <div class="section-inner__controls">
+              <a class="button-square button-outline-dark section-close inner-close" href="js:;" id="about-close">
+                <i class="fa-solid fa-arrow-left"></i>
+              </a>
+            </div>
+            <div class="section-inner__blocks no-padding-bottom">
+              <div class="content-block">
+                <h2 class="inner__title">DJ Club</h2>
+              </div>
+
+              <div class="content-block video-container">
+                <!--<video class="fullwidth-video" controls autoplay muted loop>-->
+                <!--  <source src="/video/dj.gif" type="video/mp4">-->
+                <!--  Your browser does not support the video tag.-->
+                <!--</video>-->
+                <img class="fullscreen-video" src="video/dj.gif" alt="">
+              </div>
+            </div>
+            <!-- Section Container End -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Museum -->
+    <section id="works" class="section-inner works section-bg">
+      <div class="container-fluid p-0 fullheight">
+        <div class="row g-0 fullheight">
+          <div class="col-12 section-inner__content">
+            <div class="section-inner__controls">
+              <a class="button-square button-outline-dark section-close inner-close" href="js:;" id="works-close">
+                <i class="fa-solid fa-arrow-left"></i>
+              </a>
+            </div>
+            <div class="section-inner__blocks">
+              <div class="content-block">
+                <h2 class="inner__title">Museum</h2>
+              </div>
+
+              <div class="content-block video-container">
+                <video class="fullscreen-video" controls="" autoplay="" muted="" loop="" playsinline="">
+                  <source src="video/museum.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Library -->
+    <section id="contact" class="section-inner contact section-bg">
+      <div class="container-fluid p-0 fullheight">
+        <div class="row g-0 fullheight">
+          <div class="col-12 section-inner__content">
+            <!-- Section Controls Start -->
+            <div class="section-inner__controls">
+              <a class="button-square button-outline-dark section-close inner-close" href="js:;" id="contact-close">
+                <i class="fa-solid fa-arrow-left"></i>
+              </a>
+            </div>
+            <!-- Section Controls End -->
+
+            <div class="section-inner__blocks">
+              <div class="content-block">
+                <h2 class="inner__title">Library</h2>
+              </div>
+
+              <div class="content-block video-container library-container" style="position: relative">
+                <div class="cls-library">
+                  <p>
+                    <span>Name : <b>Labubu</b></span><br>
+                    <span>Ticker : <b>$LABUBU</b></span><br>
+                    <span>Supply : <b>1 Billion</b></span><br>
+                    <span>CA :
+                      <b>0x168168Db04dEF453b7e8BfaFf1E0102a3e810485</b></span>
+                  </p>
+                </div>
+                <!--<video class="fullwidth-video" controls autoplay muted loop>-->
+                <!--  <source src="/video/library.mp4" type="video/mp4">-->
+                <!--  Your browser does not support the video tag.-->
+                <!--</video>-->
+                <img class="library-image" src="img/library.jpg" alt="">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Custom HTML End -->
+
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+    <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+      <!-- Background of PhotoSwipe.
+      It's a separate element, as animating opacity is faster than rgba(). -->
+      <div class="pswp__bg"></div>
+
+      <!-- Slides wrapper with overflow:hidden. -->
+      <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. PhotoSwipe keeps only 3 slides in DOM to save memory. -->
+        <!-- don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+          <div class="pswp__item"></div>
+          <div class="pswp__item"></div>
+          <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+          <div class="pswp__top-bar">
+            <!--  Controls are self-explanatory. Order can be changed. -->
+
+            <div class="pswp__counter"></div>
+
+            <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+            <button class="pswp__button pswp__button--share" title="Share"></button>
+
+            <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+            <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+            <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+            <!-- element will get class pswp__preloader--active when preloader is running -->
+            <div class="pswp__preloader">
+              <div class="pswp__preloader__icn">
+                <div class="pswp__preloader__cut">
+                  <div class="pswp__preloader__donut"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+            <div class="pswp__share-tooltip"></div>
+          </div>
+
+          <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+
+          <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+
+          <div class="pswp__caption">
+            <div class="pswp__caption__center"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <audio id="bg-music" loop="">
+      <source src="background.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+    <!-- Load Scripts Start -->
+    <script src="js/libs.min.js"></script>
+    <script src="js/gallery-init.js"></script>
+    <script src="js/custom.js"></script>
+    <script src="js/maps/map-color-1.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNMDtmEsvSevM4ztfsbhLfLNZhKHCvWXk"></script>
+    <!-- Load Scripts End -->
+
+    <!-- Add this script just before the closing </body> tag -->
+    <script src="ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="ajax/libs/jQuery-rwdImageMaps/1.6/jquery.rwdImageMaps.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        // Ініціалізація карти та скриптів
+        $("img[usemap]").rwdImageMaps();
+
+        function updateMap() {
+          var windowWidth = $(window).width();
+          if (windowWidth <= 768) {
+            $("#map-image").attr("usemap", "#mobile-map");
+          } else {
+            $("#map-image").attr("usemap", "#desktop-map");
+          }
+        }
+
+        updateMap();
+        $(window).resize(updateMap);
+
+        // Аудіо для фону
+        let audio = document.getElementById("bg-music");
+        audio.play().catch((error) => {
+          console.log("Autoplay was prevented:", error);
+        });
+      });
+
+
+      function initLoader() {
+        setup();
+        resize();
+        loop(0);
+      }
+
+      function stopLoader() {
+        const loader = document.querySelector(".loader");
+        if (loader) {
+          loader.remove();
+        }
+        document.getElementById("main").style.display = "block";
+      }
+    </script>
+    //
+    <script>
+      // Ensure music plays when the page is interacted with
+      window.addEventListener("load", function () {
+        let audio = document.getElementById("bg-music");
+        audio.play().catch((error) => {
+          console.log("Autoplay was prevented:", error);
+        });
+      });
+      //
+    </script>
+    <div id="running-character"></div>
+  </body>
+</html>
